@@ -1,0 +1,10 @@
+{
+  "required": [],
+  "skipped": ["dummy"],
+  "tolerance": {
+    "default": 1e-09,
+    "fields": {
+      "coeffs.impressions": 0.01
+    }
+  }
+}
