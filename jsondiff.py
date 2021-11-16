@@ -1,13 +1,10 @@
-#!/usr/bin/env python3
-
 import argparse
+import json
 import re
 import sys
 from cmath import isclose
 from itertools import zip_longest
 from numbers import Number
-
-import ujson
 
 
 class ValidateNonEmpty(argparse.Action):
@@ -27,19 +24,17 @@ class ValidateNonEmpty(argparse.Action):
 
 
 class JsonDiff:
-    def __init__(self):
-        args = self.get_args()
-        self.file1 = ujson.loads(args.file1)
-        self.file2 = ujson.loads(args.file2)
-        cfg = ujson.loads(args.config)
+    def __init__(self, object_1: dict, object_2, config: dict):
+        self.file1 = object_1
+        self.file2 = object_2
 
-        self.default_tol = cfg['tolerance']['default']
-        self.skip = {re.compile(i) for i in cfg['skipped']}
-        self.required = {re.compile(i) for i in cfg['required']}
-        self.tol_vals = {re.compile(k): v for k, v in cfg['tolerance']['fields'].items()}
+        self.default_tol = config['tolerance']['default']
+        self.skip = {re.compile(i) for i in config['skipped']}
+        self.required = {re.compile(i) for i in config['required']}
+        self.tol_vals = {re.compile(k): v for k, v in config['tolerance']['fields'].items()}
         self.diff = {}
 
-    def get_diff(self, one, two, diff, prefix=""):
+    def find_diff(self, one, two, diff, prefix=""):
         if isinstance(one, dict) and isinstance(two, dict):
             diff.update(
                 **{k: one[k] for k in one.keys() - two.keys() if not self.is_skip(k, self.skip)},
@@ -66,9 +61,9 @@ class JsonDiff:
                     if one[k] != two[k]:
                         diff.update({k: [one[k], two[k]]})
                 elif isinstance(one[k], dict):
-                    self.get_diff(one[k], two[k], diff[k], full_path)
+                    self.find_diff(one[k], two[k], diff[k], full_path)
                 elif isinstance(one[k], list):
-                    self.get_diff(one[k], two[k], diff[k], full_path)
+                    self.find_diff(one[k], two[k], diff[k], full_path)
         elif isinstance(one, list) and isinstance(two, list):
             for indx, (elem1, elem2) in enumerate(zip_longest(one, two)):
                 full_path = "[%s]" % indx if not prefix else "".join([prefix, "[%s]" % indx])
@@ -83,10 +78,10 @@ class JsonDiff:
                         diff.update({indx: [elem1, elem2]})
                 elif isinstance(elem1, dict):
                     diff[indx] = {}
-                    self.get_diff(elem1, elem2, diff[indx], full_path)
+                    self.find_diff(elem1, elem2, diff[indx], full_path)
 
-    def print_diff(self):
-        print(ujson.dumps(self.del_empty(self.diff), indent=4))
+    def get_diff(self):
+        return self.del_empty(self.diff)
 
     def _get_tol(self, full_path):
         try:
@@ -109,36 +104,41 @@ class JsonDiff:
                 filtered_data[k] = v
         return filtered_data
 
-    @staticmethod
-    def get_args():
-        description = 'json comparison utility'
 
-        argparser = argparse.ArgumentParser(description)
-        argparser.add_argument(
-            '-c', '--config', type=argparse.FileType('r'), dest='config',
-            required=True, help='<config.json>',
-            action=ValidateNonEmpty
-        )
+def get_args():
+    description = 'json comparison utility'
 
-        argparser.add_argument(
-            '-f1', '--file1', type=argparse.FileType('r'),
-            dest='file1', required=True, help='<file1.json>',
-            action=ValidateNonEmpty
-        )
-        argparser.add_argument(
-            '-f2', '--file2', type=argparse.FileType('r'),
-            dest='file2', required=True, help='<file2.json>',
-            action=ValidateNonEmpty
-        )
-        args = argparser.parse_args()
+    argparser = argparse.ArgumentParser(description)
+    argparser.add_argument(
+        '-c', '--config', type=argparse.FileType('r'), dest='config',
+        required=True, help='<config.json>',
+        action=ValidateNonEmpty
+    )
 
-        return args
+    argparser.add_argument(
+        '-f1', '--file1', type=argparse.FileType('r'),
+        dest='file1', required=True, help='<file1.json>',
+        action=ValidateNonEmpty
+    )
+    argparser.add_argument(
+        '-f2', '--file2', type=argparse.FileType('r'),
+        dest='file2', required=True, help='<file2.json>',
+        action=ValidateNonEmpty
+    )
+    args = argparser.parse_args()
+
+    return args
 
 
 def main():
-    d = JsonDiff()
-    d.get_diff(d.file1, d.file2, d.diff)
-    d.print_diff()
+    args = get_args()
+    file1 = json.loads(args.file1)
+    file2 = json.loads(args.file2)
+    cfg = json.loads(args.config)
+
+    d = JsonDiff(file1, file2, cfg)
+    d.find_diff(d.file1, d.file2, d.diff)
+    print(d.get_diff())
 
 
 if __name__ == "__main__":
