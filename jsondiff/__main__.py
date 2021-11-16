@@ -10,9 +10,9 @@ def main():
     file2 = json.loads(args.file2)
     cfg = json.loads(args.config)
 
-    d = difference.JsonDiff(config=cfg)
-    d.find_diff(one=file1, two=file2, diff=d.diff)
-    print(d.get_diff())
+    jd = difference.JsonDiff(config=cfg)
+    jd.find_diff(one=file1, two=file2, diff=jd.diff)
+    print(jd.get_diff())
 
 
 if __name__ == "__main__":
