@@ -4,7 +4,7 @@ __description__ = (
     "different number precision, leaving out optional fields or "
     "picking the required fields, only; it's also possible to use some field prefix or regex to pick fields"
 )
-__url__ = 'https://github.com/vspaz/pyclient'
+__url__ = 'https://github.com/vspaz/jsondiff'
 __email__ = ''
 __author__ = 'vspaz'
 __maintainer__ = 'vspaz'
