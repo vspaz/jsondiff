@@ -1,4 +1,4 @@
-from jsondiff.jsondiff import JsonDiff
+from jsondiff.difference import JsonDiff
 
 confg = {
   "required": [],
