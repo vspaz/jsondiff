@@ -5,9 +5,18 @@ from numbers import Number
 
 
 class JsonDiff:
-    def __init__(self, object_1: dict, object_2, config: dict):
-        self.file1 = object_1
-        self.file2 = object_2
+    def __init__(self, config=None):
+        if config is None:
+            config = {
+                "required": [],
+                "skipped": [],
+                "tolerance": {
+                    "default": 1e-09,
+                    "fields": {
+
+                    }
+                }
+            }
 
         self.default_tol = config['tolerance']['default']
         self.skip = {re.compile(i) for i in config['skipped']}

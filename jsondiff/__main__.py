@@ -1,4 +1,5 @@
 import json
+
 from jsondiff import cli
 from jsondiff import difference
 
@@ -9,8 +10,8 @@ def main():
     file2 = json.loads(args.file2)
     cfg = json.loads(args.config)
 
-    d = difference.JsonDiff(file1, file2, cfg)
-    d.find_diff(d.file1, d.file2, d.diff)
+    d = difference.JsonDiff(config=cfg)
+    d.find_diff(one=file1, two=file2, diff=d.diff)
     print(d.get_diff())
 
 
