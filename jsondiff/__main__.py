@@ -1,7 +1,6 @@
 import json
 
-from jsondiff import cli
-from jsondiff import difference
+from jsondiff import cli, difference
 
 
 def main():
