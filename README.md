@@ -1,11 +1,19 @@
 # jsondiff
 yet another json diff utility helpful for data analysis.
 
-unlike many other json diff utility, you can
+unlike other json diff utilities, you can:
 * leave out from comparison the fields that you are not interested in.
 * define only required fields
 * compare numeric values using a particular precision tolerance e.g. `1e-03`, which can be set globally or per field.
-* use regex to define fields.
+* use regexes to define fields.
+
+### install
+
+```shell
+git clone git@github.com:vspaz/jsondiff.git
+cd jsondiff
+python3 setup.py install
+```
 
 ### config (optional)
 
@@ -31,6 +39,5 @@ jsondiff -f1 tests/data/file_1.json -f2 tests/data/file_2.json -c tests/data/con
 
 or
 ```shell
-
 jsondiff -f1 tests/data/file_1.json -f2 tests/data/file_2.json  #  -> {'baz': {'barbaz': [90, 80]}}  # no fields are skipped
 ```
