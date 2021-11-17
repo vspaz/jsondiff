@@ -6,14 +6,13 @@ from numbers import Number
 
 class DictDiff:
     def __init__(self, config=None):
-        if config is None:
+        if not config:
             config = {
                 'required': [],
                 'skipped': [],
                 'tolerance': {
                     'default': 1e-09,
                     'fields': {
-
                     },
                 },
             }

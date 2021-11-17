@@ -1,4 +1,5 @@
 import argparse
+import logging
 import sys
 
 
@@ -10,9 +11,9 @@ class ValidateNonEmpty(argparse.Action):
         json_string = values.read()
         if not json_string:
             try:
-                raise ValueError('file: {} is empty'.format(values.name))
+                raise ValueError(f'file: {values.name} is empty')
             except ValueError as e:
-                print(('{}'.format(e)))
+                logging.error(e)
                 sys.exit(1)
         else:
             setattr(namespace, self.dest, json_string)
@@ -24,7 +25,7 @@ def get_args():
     argparser = argparse.ArgumentParser(description)
     argparser.add_argument(
         '-c', '--config', type=argparse.FileType('r'), dest='config',
-        required=True, help='<config.json>',
+        required=False, default='{}', help='<config.json>',
         action=ValidateNonEmpty,
     )
 
