@@ -41,3 +41,18 @@ def test_fields_skip_ok():
     jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
     difference = jd.get_diff()
     assert difference == {}
+
+
+def test_default_tolerance():
+    object_1 = {'foo': 10.0001}
+    object_2 = {'foo': 10.001}
+
+    jd = DictDiff(config={'tolerance': {'default': 1e-04}})
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {}
+
+    jd = DictDiff(config={'tolerance': {'default': 1e-05}})
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {'foo': [10.0001, 10.001]}
