@@ -10,7 +10,7 @@ class ValidateNonEmpty(argparse.Action):
         json_string = values.read()
         if not json_string:
             try:
-                raise ValueError("file: {} is empty".format(values.name))
+                raise ValueError('file: {} is empty'.format(values.name))
             except ValueError as e:
                 print(('{}'.format(e)))
                 sys.exit(1)
@@ -25,17 +25,17 @@ def get_args():
     argparser.add_argument(
         '-c', '--config', type=argparse.FileType('r'), dest='config',
         required=True, help='<config.json>',
-        action=ValidateNonEmpty
+        action=ValidateNonEmpty,
     )
 
     argparser.add_argument(
         '-f1', '--file1', type=argparse.FileType('r'),
         dest='file1', required=True, help='<file1.json>',
-        action=ValidateNonEmpty
+        action=ValidateNonEmpty,
     )
     argparser.add_argument(
         '-f2', '--file2', type=argparse.FileType('r'),
         dest='file2', required=True, help='<file2.json>',
-        action=ValidateNonEmpty
+        action=ValidateNonEmpty,
     )
     return argparser.parse_args()

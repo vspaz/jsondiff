@@ -8,14 +8,14 @@ class JsonDiff:
     def __init__(self, config=None):
         if config is None:
             config = {
-                "required": [],
-                "skipped": [],
-                "tolerance": {
-                    "default": 1e-09,
-                    "fields": {
+                'required': [],
+                'skipped': [],
+                'tolerance': {
+                    'default': 1e-09,
+                    'fields': {
 
-                    }
-                }
+                    },
+                },
             }
 
         self.default_tol = config['tolerance']['default']
@@ -24,7 +24,7 @@ class JsonDiff:
         self.tol_vals = {re.compile(k): v for k, v in config['tolerance']['fields'].items()}
         self.diff = {}
 
-    def find_diff(self, one, two, diff, prefix=""):
+    def find_diff(self, one, two, diff, prefix=''):
         if isinstance(one, dict) and isinstance(two, dict):
             diff.update(
                 **{k: one[k] for k in one.keys() - two.keys() if not self.is_skip(k, self.skip)},
@@ -33,7 +33,7 @@ class JsonDiff:
 
             common_keys = one.keys() & two.keys()
             for k in common_keys:
-                full_path = k if not prefix else ".".join([prefix, k])
+                full_path = k if not prefix else '.'.join([prefix, k])
                 # exclude keys from diff
                 if self.is_skip(full_path, self.skip):
                     continue
