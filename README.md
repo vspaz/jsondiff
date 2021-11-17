@@ -1,5 +1,5 @@
 # jsondiff
-yet another json diff utility helpful for data analysis.
+yet another jsondiff utility usefule for data analysis.
 
 unlike other json diff utilities, you can:
 * leave out from comparison the fields that you are not interested in.
