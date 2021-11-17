@@ -55,20 +55,20 @@ class JsonDiff:
                 elif isinstance(one[k], list):
                     self.find_diff(one[k], two[k], diff[k], full_path)
         elif isinstance(one, list) and isinstance(two, list):
-            for indx, (elem1, elem2) in enumerate(zip_longest(one, two)):
-                full_path = "[%s]" % indx if not prefix else "".join([prefix, "[%s]" % indx])
+            for idx, (elem1, elem2) in enumerate(zip_longest(one, two)):
+                full_path = f"[{idx}]" if not prefix else f"{prefix}{[idx]}"
                 if isinstance(elem1, Number) and isinstance(elem2, Number):
                     # apply specific tolerance to specific fields
                     if not isclose(elem1, elem2, rel_tol=self._get_tol(full_path)):
-                        diff.update({indx: [elem1, elem2]})
+                        diff.update({idx: [elem1, elem2]})
                 elif len({type(elem1), type(elem2)}) == 2:
-                    diff.update({indx: [elem1, elem2]})
+                    diff.update({idx: [elem1, elem2]})
                 elif isinstance(elem1, str):
                     if elem1 != elem2:
-                        diff.update({indx: [elem1, elem2]})
+                        diff.update({idx: [elem1, elem2]})
                 elif isinstance(elem1, dict):
-                    diff[indx] = {}
-                    self.find_diff(elem1, elem2, diff[indx], full_path)
+                    diff[idx] = {}
+                    self.find_diff(elem1, elem2, diff[idx], full_path)
 
     def get_diff(self):
         return self.del_empty(self.diff)
