@@ -4,7 +4,7 @@ from itertools import zip_longest
 from numbers import Number
 
 
-class JsonDiff:
+class DictDiff:
     def __init__(self, config=None):
         if config is None:
             config = {
@@ -89,7 +89,7 @@ class JsonDiff:
         filtered_data = {}
         for k, v in nested_dict.items():
             if isinstance(v, dict):
-                v = JsonDiff.del_empty(v)
+                v = DictDiff.del_empty(v)
             if v != {}:
                 filtered_data[k] = v
         return filtered_data

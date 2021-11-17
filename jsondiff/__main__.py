@@ -9,7 +9,7 @@ def main():
     file2 = json.loads(args.file2)
     cfg = json.loads(args.config)
 
-    jd = difference.JsonDiff(config=cfg)
+    jd = difference.DictDiff(config=cfg)
     jd.find_diff(one=file1, two=file2, diff=jd.diff)
     print(jd.get_diff())
 
