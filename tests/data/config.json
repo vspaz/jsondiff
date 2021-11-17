@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "skipped": [
+    "barbaz"
+  ],
+  "tolerance": {
+    "default": 1e-09,
+    "fields": {
+      "foo": 0.01,
+      "baz": 0.1
+    }
+  }
+}
