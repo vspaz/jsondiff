@@ -33,11 +33,16 @@ def test_fields_skip_ok():
     object_1 = {'foo': 10, 'key_1': {'key_1': 'value_1'}}
     object_2 = {'foo': 20, 'key_1': {'key_1': 'value_1'}}
 
-    config_1 = {
-        'skipped': [],
-    }
+    config_do_not_skip_fields = {'skipped': []}
 
-    jd = DictDiff(config=config_1)
+    jd = DictDiff(config=config_do_not_skip_fields)
     jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
     difference = jd.get_diff()
     assert difference == {'foo': [10, 20]}
+
+    config_skip_fields = {'skipped': ['foo']}
+
+    jd = DictDiff(config=config_skip_fields)
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {}
