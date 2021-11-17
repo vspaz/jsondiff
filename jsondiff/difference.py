@@ -7,20 +7,13 @@ from numbers import Number
 class DictDiff:
     def __init__(self, config=None):
         if not config:
-            config = {
-                'required': [],
-                'skipped': [],
-                'tolerance': {
-                    'default': 1e-09,
-                    'fields': {
-                    },
-                },
-            }
+            config = {}
 
-        self.default_tol = config['tolerance']['default']
-        self.skip = {re.compile(i) for i in config['skipped']}
-        self.required = {re.compile(i) for i in config['required']}
-        self.tol_vals = {re.compile(k): v for k, v in config['tolerance']['fields'].items()}
+        tolerance = config.get('tolerance', {})
+        self.default_tol = tolerance.get('default', 1e-09)
+        self.skip = {re.compile(i) for i in config.get('skipped', [])}
+        self.required = {re.compile(i) for i in config.get('required', [])}
+        self.tol_vals = {re.compile(k): v for k, v in tolerance.get('fields', {}).items()}
         self.diff = {}
 
     def find_diff(self, one, two, diff, prefix=''):
