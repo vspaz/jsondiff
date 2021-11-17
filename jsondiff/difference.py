@@ -6,9 +6,7 @@ from numbers import Number
 
 class DictDiff:
     def __init__(self, config=None):
-        if not config:
-            config = {}
-
+        config = config or {}
         tolerance = config.get('tolerance', {})
         self.default_tol = tolerance.get('default', 1e-09)
         self.skip = {re.compile(i) for i in config.get('skipped', [])}
@@ -25,7 +23,7 @@ class DictDiff:
 
             common_keys = one.keys() & two.keys()
             for k in common_keys:
-                full_path = k if not prefix else '.'.join([prefix, k])
+                full_path = k if not prefix else f'{prefix}.{k}'
                 # exclude keys from diff
                 if self.is_skip(full_path, self.skip):
                     continue
@@ -47,20 +45,20 @@ class DictDiff:
                 elif isinstance(one[k], list):
                     self.find_diff(one[k], two[k], diff[k], full_path)
         elif isinstance(one, list) and isinstance(two, list):
-            for idx, (elem1, elem2) in enumerate(zip_longest(one, two)):
-                full_path = f"[{idx}]" if not prefix else f"{prefix}{[idx]}"
-                if isinstance(elem1, Number) and isinstance(elem2, Number):
+            for idx, (elem_1, elem_2) in enumerate(zip_longest(one, two)):
+                full_path = f"[{idx}]" if not prefix else f"{prefix}[{idx}]"
+                if isinstance(elem_1, Number) and isinstance(elem_2, Number):
                     # apply specific tolerance to specific fields
-                    if not isclose(elem1, elem2, rel_tol=self._get_tol(full_path)):
-                        diff.update({idx: [elem1, elem2]})
-                elif len({type(elem1), type(elem2)}) == 2:
-                    diff.update({idx: [elem1, elem2]})
-                elif isinstance(elem1, str):
-                    if elem1 != elem2:
-                        diff.update({idx: [elem1, elem2]})
-                elif isinstance(elem1, dict):
+                    if not isclose(elem_1, elem_2, rel_tol=self._get_tol(full_path)):
+                        diff.update({idx: [elem_1, elem_2]})
+                elif len({type(elem_1), type(elem_2)}) == 2:
+                    diff.update({idx: [elem_1, elem_2]})
+                elif isinstance(elem_1, str):
+                    if elem_1 != elem_2:
+                        diff.update({idx: [elem_1, elem_2]})
+                elif isinstance(elem_1, dict):
                     diff[idx] = {}
-                    self.find_diff(elem1, elem2, diff[idx], full_path)
+                    self.find_diff(elem_1, elem_2, diff[idx], full_path)
 
     def get_diff(self):
         return self.del_empty(self.diff)
