@@ -43,7 +43,7 @@ def test_fields_skip_ok():
     assert difference == {}
 
 
-def test_default_tolerance():
+def test_default_relative_tolerance():
     object_1 = {'foo': 10.0001}
     object_2 = {'foo': 10.001}
 
@@ -56,3 +56,19 @@ def test_default_tolerance():
     jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
     difference = jd.get_diff()
     assert difference == {'foo': [10.0001, 10.001]}
+
+
+def test_relative_tolerance_per_field():
+    object_1 = {'foo': 100}
+    object_2 = {'foo': 90}
+    config = {
+        'tolerance': {
+            'fields': {
+                'foo': 0.1
+            },
+        },
+    }
+    jd = DictDiff(config=config)
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {}
