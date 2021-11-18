@@ -1,3 +1,5 @@
+import math
+
 from jsondiff.difference import DictDiff
 
 
@@ -59,12 +61,16 @@ def test_default_relative_tolerance():
 
 
 def test_relative_tolerance_per_field():
-    object_1 = {'foo': 100}
-    object_2 = {'foo': 90}
+    value_1 = 100
+    value_2 = 90
+    relative_tolerance = 0.1
+
+    object_1 = {'foo': value_1}
+    object_2 = {'foo': value_2}
     config = {
         'tolerance': {
             'fields': {
-                'foo': 0.1
+                'foo': relative_tolerance
             },
         },
     }
@@ -72,3 +78,4 @@ def test_relative_tolerance_per_field():
     jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
     difference = jd.get_diff()
     assert difference == {}
+    assert math.isclose(value_1, value_2, rel_tol=relative_tolerance)
