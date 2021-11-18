@@ -5,7 +5,7 @@ unlike other json diff utilities, you can:
 * leave out from comparison the fields that you are not interested in.
 * define only required fields
 * compare numeric values using relative precision tolerance e.g. `1e-03` or `0.001`, which can be set globally or per field.
-* use regexes to define fields.
+* use prefix or regexes to define fields.
 
 ### install
 

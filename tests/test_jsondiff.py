@@ -88,3 +88,34 @@ def test_relative_tolerance_per_field():
     difference = jd.get_diff()
     assert difference == {'foo': [100, 90]}
     assert math.isclose(value_1, value_2, rel_tol=relative_tolerance) is False
+
+
+def test_specific_to_field_tolerance():
+    value_1 = 100
+    value_2 = 90
+    relative_tolerance = 0.1
+
+    object_1 = {'foo': value_1}
+    object_2 = {'foo': value_2}
+    config = {
+        'tolerance': {
+            'default': 0.5,
+            'fields': {
+                'foo': relative_tolerance
+            },
+        },
+    }
+    jd = DictDiff(config=config)
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {}
+    assert math.isclose(value_1, value_2, rel_tol=relative_tolerance)
+
+    relative_tolerance = 0.01
+    config['tolerance']['fields']['foo'] = relative_tolerance
+
+    jd = DictDiff(config=config)
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {'foo': [100, 90]}
+    assert math.isclose(value_1, value_2, rel_tol=relative_tolerance) is False
