@@ -79,3 +79,12 @@ def test_relative_tolerance_per_field():
     difference = jd.get_diff()
     assert difference == {}
     assert math.isclose(value_1, value_2, rel_tol=relative_tolerance)
+
+    relative_tolerance = 0.01
+    config['tolerance']['fields']['foo'] = relative_tolerance
+
+    jd = DictDiff(config=config)
+    jd.find_diff(one=object_1, two=object_2, diff=jd.diff)
+    difference = jd.get_diff()
+    assert difference == {'foo': [100, 90]}
+    assert math.isclose(value_1, value_2, rel_tol=relative_tolerance) is False
