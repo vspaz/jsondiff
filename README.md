@@ -4,7 +4,7 @@ yet another jsondiff utility helpful for data analysis.
 unlike other json diff utilities, you can:
 * leave out from comparison the fields that you are not interested in.
 * define only required fields
-* compare numeric values using absolute or relative precision tolerance e.g. `1e-03` or `0.02`, which can be set globally or per field.
+* compare numeric values using relative precision tolerance e.g. `1e-03` or `0.001`, which can be set globally or per field.
 * use regexes to define fields.
 
 ### install
