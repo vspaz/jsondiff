@@ -70,7 +70,7 @@ def test_relative_tolerance_per_field():
     config = {
         'tolerance': {
             'fields': {
-                'foo': relative_tolerance
+                'foo': relative_tolerance,
             },
         },
     }
@@ -101,7 +101,7 @@ def test_specific_to_field_tolerance():
         'tolerance': {
             'default': 0.5,
             'fields': {
-                'foo': relative_tolerance
+                'foo': relative_tolerance,
             },
         },
     }
