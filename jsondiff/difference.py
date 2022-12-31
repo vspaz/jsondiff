@@ -35,7 +35,7 @@ class DictDiff:
                     # apply specific tolerance to specific fields
                     if not isclose(one[k], two[k], rel_tol=self._get_tol(full_path)):
                         diff.update({k: [one[k], two[k]]})
-                elif len({type(one[k]), type(two[k])}) == 2:
+                elif not isinstance(one[k], type(two[k])):
                     diff.update({k: [one[k], two[k]]})
                 elif isinstance(one[k], str):
                     if one[k] != two[k]:
