@@ -46,7 +46,7 @@ jsondiff -f1 tests/data/file_1.json -f2 tests/data/file_2.json  #  -> {'baz': {'
 ```shell
 git clone git@github.com:vspaz/jsondiff.git
 cd jsondiff
-python3 -m pip install -r requirements/dev.txt
+pip install -r requirements/dev.txt
 make test
 
 ```
