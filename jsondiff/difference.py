@@ -7,14 +7,14 @@ from numbers import Number
 class DictDiff:
     def __init__(self, config=None):
         config = config or {}
-        tolerance = config.get('tolerance', {})
-        self.default_tol = tolerance.get('default', 1e-09)
-        self.skip = {re.compile(i) for i in config.get('skipped', [])}
-        self.required = {re.compile(i) for i in config.get('required', [])}
-        self.tol_vals = {re.compile(k): v for k, v in tolerance.get('fields', {}).items()}
+        tolerance = config.get("tolerance", {})
+        self.default_tol = tolerance.get("default", 1e-09)
+        self.skip = {re.compile(i) for i in config.get("skipped", [])}
+        self.required = {re.compile(i) for i in config.get("required", [])}
+        self.tol_vals = {re.compile(k): v for k, v in tolerance.get("fields", {}).items()}
         self.diff = {}
 
-    def find_diff(self, one, two, diff, prefix=''):
+    def find_diff(self, one, two, diff, prefix=""):
         if isinstance(one, dict) and isinstance(two, dict):
             diff.update(
                 **{k: one[k] for k in one.keys() - two.keys() if not self.is_skip(k, self.skip)},
@@ -23,7 +23,7 @@ class DictDiff:
 
             common_keys = one.keys() & two.keys()
             for k in common_keys:
-                full_path = k if not prefix else f'{prefix}.{k}'
+                full_path = k if not prefix else f"{prefix}.{k}"
                 # exclude keys from diff
                 if self.is_skip(full_path, self.skip):
                     continue
