@@ -7,4 +7,4 @@ __description__ = (
 __url__ = "https://github.com/vspaz/jsondiff"
 __author__ = "vspaz"
 __maintainer__ = "vspaz"
-__version__ = "v0.2.1"
+__version__ = "v0.2.2"
