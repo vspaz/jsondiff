@@ -17,15 +17,15 @@ class DictDiff:
     def find_diff(self, one, two, diff, prefix=""):
         if isinstance(one, dict) and isinstance(two, dict):
             diff.update(
-                **{k: one[k] for k in one.keys() - two.keys() if not self.is_skip(k, self.skip)},
-                **{k: two[k] for k in two.keys() - one.keys() if not self.is_skip(k, self.skip)}
+                **{k: one[k] for k in one.keys() - two.keys() if not is_skip(k, self.skip)},
+                **{k: two[k] for k in two.keys() - one.keys() if not is_skip(k, self.skip)}
             )
 
             common_keys = one.keys() & two.keys()
             for k in common_keys:
                 full_path = k if not prefix else f"{prefix}.{k}"
                 # exclude keys from diff
-                if self.is_skip(full_path, self.skip):
+                if is_skip(full_path, self.skip):
                     continue
                 # include required keys into diff, only
                 if self.required and not any(i for i in self.required if re.search(i, full_path)):
@@ -61,7 +61,7 @@ class DictDiff:
                     self.find_diff(elem_1, elem_2, diff[idx], full_path)
 
     def get_diff(self):
-        return self.del_empty(self.diff)
+        return del_empty(self.diff)
 
     def _get_tol(self, full_path):
         try:
@@ -70,16 +70,16 @@ class DictDiff:
         except IndexError:
             return self.default_tol
 
-    @staticmethod
-    def is_skip(where, skip):
-        return any(re.search(p, where) for p in skip)
 
-    @staticmethod
-    def del_empty(nested_dict):
-        filtered_data = {}
-        for k, v in nested_dict.items():
-            if isinstance(v, dict):
-                v = DictDiff.del_empty(v)
-            if v != {}:
-                filtered_data[k] = v
-        return filtered_data
+def is_skip(where, skip):
+    return any(re.search(p, where) for p in skip)
+
+
+def del_empty(nested_dict):
+    filtered_data = {}
+    for k, v in nested_dict.items():
+        if isinstance(v, dict):
+            v = del_empty(v)
+        if v != {}:
+            filtered_data[k] = v
+    return filtered_data
