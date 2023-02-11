@@ -6,5 +6,6 @@ __description__ = (
 )
 __url__ = "https://github.com/vspaz/jsondiff"
 __author__ = "vspaz"
+__email__ = ""
 __maintainer__ = "vspaz"
-__version__ = "v0.2.2"
+__version__ = "1.0.0"
