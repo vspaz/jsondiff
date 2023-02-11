@@ -10,6 +10,8 @@ unlike other json diff utilities:
 * there's an **optional** config (see below) when dealing with a large number of fields.
 * jsondiff requires no 3d party modules.
 
+**NOTE**: there's also an experimental WIP version implemented in C & Cython.
+
 ### install
 
 ```shell
