@@ -1,14 +1,14 @@
 # jsondiff
 yet another jsondiff utility helpful for data analysis.
-It doesn't require any 3d-party dependencies
 
-unlike other json diff utilities, you can:
-* **skip the fields** that you are not interested in.
-* choose only required fields
-* compare numeric values using relative or absolute **precision tolerance** e.g. `1e-03` or `0.001`, which can be set globally or per field.
-* use field **prefixes** or **regexes** to filter out fields.
-* use an optional config (see below) when dealing with a large number of fields.
+unlike other json diff utilities:
 
+* it's possible to **skip the fields** that you are not interesting for analysis.
+* one can choose only required fields
+* the jsondiff utility compares numeric values using relative or absolute **precision tolerance** e.g. `1e-03` or `0.001`, which can be set globally or per field.
+* it's possible to use field **prefixes** or **regexes** to filter out fields.
+* there's an **optional** config (see below) when dealing with a large number of fields.
+* jsondiff requires no 3d party modules
 
 ### install
 
