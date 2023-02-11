@@ -23,18 +23,18 @@ def _get_package_info():
 _PACKAGE_INFO = _get_package_info()
 
 
-extension = Extension(
-    name='jsondiff.difference',
-    sources=['jsondiff/difference.c']
-)
-
 setup(
     name=_PACKAGE_INFO["__title__"],
     version=_PACKAGE_INFO["__version__"],
     description=_PACKAGE_INFO["__description__"],
     long_description=_get_readme(),
     packages=find_packages(exclude=["tests", "requirements"]),
-    ext_modules=[extension],
+    ext_modules=[
+        Extension(
+            name='jsondiff.difference',
+            sources=['jsondiff/difference.c']
+        )
+    ],
     # ext_modules=cythonize(
     #     'jsondiff/difference.pyx',
     #     compiler_directives={'boundscheck': False}
