@@ -1,6 +1,5 @@
 import os
 from setuptools import find_packages, setup
-from distutils.core import Extension
 from Cython.Build import cythonize
 
 
@@ -23,23 +22,16 @@ def _get_package_info():
 _PACKAGE_INFO = _get_package_info()
 
 
-extension = Extension(
-        name='jsondiff.diff',
-        sources=['jsondiff/diff.c']
-    )
-
 setup(
     name=_PACKAGE_INFO["__title__"],
     version=_PACKAGE_INFO["__version__"],
     description=_PACKAGE_INFO["__description__"],
     long_description=_get_readme(),
     packages=find_packages(exclude=["tests", "requirements"]),
-    # ext_modules=cythonize(
-    #     'jsondiff/difference.pyx',
-    #     compiler_directives={'boundscheck': False}
-    # ),
-    ext_modules=[extension],
-    install_requires=["cython"],
+    ext_modules=cythonize(
+        'jsondiff/difference.pyx',
+        compiler_directives={'boundscheck': False}
+    ),
     url=_PACKAGE_INFO["__url__"],
     license="MIT License",
     author=_PACKAGE_INFO["__author__"],
