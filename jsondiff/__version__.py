@@ -5,6 +5,7 @@ __description__ = (
     "picking the required fields, only; it's also possible to use some string, prefix or regex to filter fields"
 )
 __url__ = "https://github.com/vspaz/jsondiff"
+__email__ = ""
 __author__ = "vspaz"
 __maintainer__ = "vspaz"
-__version__ = "v0.2.2"
+__version__ = "0.2.2"
