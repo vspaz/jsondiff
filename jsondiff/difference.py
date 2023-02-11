@@ -71,8 +71,8 @@ class DictDiff:
             return self.default_tol
 
 
-def is_skip(where, skip):
-    return any(re.search(p, where) for p in skip)
+def is_skip(key, skipped_key_prefixes):
+    return any(re.search(skipped_key_prefix, key) for skipped_key_prefix in skipped_key_prefixes)
 
 
 def del_empty(nested_dict):
