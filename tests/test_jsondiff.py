@@ -1,6 +1,6 @@
 import math
 
-from jsondiff.difference import DictDiff
+from jsondiff.jsondiff.difference import DictDiff
 
 
 def test_same_dict_ok():
