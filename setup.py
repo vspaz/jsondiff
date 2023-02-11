@@ -1,4 +1,5 @@
 import os
+from Cython.Build import cythonize
 
 import setuptools
 
@@ -27,6 +28,10 @@ setuptools.setup(
     description=_PACKAGE_INFO["__description__"],
     long_description=_get_readme(),
     packages=setuptools.find_packages(exclude=["tests", "requirements"]),
+    ext_modules=cythonize(
+        'jsondiff/difference.pyx',
+        compiler_directives={'boundscheck': False}
+    ),
     install_requires=[],
     url=_PACKAGE_INFO["__url__"],
     license="MIT License",
