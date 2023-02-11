@@ -28,5 +28,5 @@ trail-comma:
 style-fix:
 	sh -c "isort . "
 	trim corevps
-	unify --in-place -r .
+	unify -r -i --quote '"' .
 	find . -name '*.py' -exec add-trailing-comma {} +
