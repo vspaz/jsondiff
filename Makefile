@@ -24,3 +24,9 @@ unify:
 
 trail-comma:
 	  find . -name '*.py' -exec add-trailing-comma {} +
+
+style-fix:
+	sh -c "isort . "
+	trim corevps
+	unify --in-place -r .
+	find . -name '*.py' -exec add-trailing-comma {} +
