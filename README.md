@@ -8,7 +8,7 @@ unlike other json diff utilities:
 * the jsondiff utility compares numeric values using relative or absolute **precision tolerance** e.g. `1e-03` or `0.001`, which can be set globally or per field.
 * it's possible to use field **prefixes** or **regexes** to filter out fields.
 * there's an **optional** config (see below) when dealing with a large number of fields.
-* jsondiff requires no 3d party modules
+* jsondiff requires no 3d party modules.
 
 ### install
 
