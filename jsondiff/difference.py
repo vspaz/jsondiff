@@ -5,30 +5,36 @@ from numbers import Number
 
 
 class DictDiff:
+
+    default_config = dict(
+        tolerance={"default": 1e-09, "fields": {}},
+        skipped=[],
+        required=[],
+    )
+
     def __init__(self, config=None):
-        config = config or {}
-        tolerance = config.get("tolerance", {})
-        self.default_tol = tolerance.get("default", 1e-09)
-        self.skip = {re.compile(i) for i in config.get("skipped", [])}
-        self.required = {re.compile(i) for i in config.get("required", [])}
-        self.tol_vals = {re.compile(k): v for k, v in tolerance.get("fields", {}).items()}
+        config = config or self.default_config
+        self.default_tol = config['tolerance']["default"]
+        self.skip_fields = {re.compile(field) for field in config["skipped"]}
+        self.required_fields = {re.compile(field) for field in config["required"]}
+        self.field_to_tol = {re.compile(field): tol for field, tol in config["tolerance"]["fields"].items()}
         self.diff = {}
 
     def find_diff(self, one, two, diff, prefix=""):
         if isinstance(one, dict) and isinstance(two, dict):
             diff.update(
-                **{k: one[k] for k in one.keys() - two.keys() if not is_skip(k, self.skip)},
-                **{k: two[k] for k in two.keys() - one.keys() if not is_skip(k, self.skip)}
+                **{k: one[k] for k in one.keys() - two.keys() if not is_skip(k, self.skip_fields)},
+                **{k: two[k] for k in two.keys() - one.keys() if not is_skip(k, self.skip_fields)}
             )
 
             common_keys = one.keys() & two.keys()
             for k in common_keys:
                 full_path = k if not prefix else f"{prefix}.{k}"
                 # exclude keys from diff
-                if is_skip(full_path, self.skip):
+                if is_skip(full_path, self.skip_fields):
                     continue
                 # include required keys into diff, only
-                if self.required and not any(i for i in self.required if re.search(i, full_path)):
+                if self.required_fields and not any(i for i in self.required_fields if re.search(i, full_path)):
                     continue
                 diff[k] = {}
                 if isinstance(one[k], Number) and isinstance(two[k], Number):
@@ -64,8 +70,8 @@ class DictDiff:
         return del_empty(self.diff)
 
     def _get_tol(self, full_path):
-        # get the most specific tolerance for a key
-        tolerance_values_per_field = [self.tol_vals[t] for t in self.tol_vals if re.search(t, full_path)]
+        # get the most specific tolerance for a key e.g. foo.bar.baz
+        tolerance_values_per_field = [self.field_to_tol[t] for t in self.field_to_tol if re.search(t, full_path)]
         if len(tolerance_values_per_field) > 0:
             return tolerance_values_per_field[-1]
         return self.default_tol
@@ -75,9 +81,9 @@ def is_skip(key, skipped_key_prefixes):
     return any(re.search(skipped_key_prefix, key) for skipped_key_prefix in skipped_key_prefixes)
 
 
-def del_empty(nested_dict):
+def del_empty(nested_object):
     filtered_data = {}
-    for k, v in nested_dict.items():
+    for k, v in nested_object.items():
         if isinstance(v, dict):
             v = del_empty(v)
         if v != {}:
