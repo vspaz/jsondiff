@@ -64,11 +64,11 @@ class DictDiff:
         return del_empty(self.diff)
 
     def _get_tol(self, full_path):
-        try:
-            # get the last tolerance which is most specific to a particular key
-            return [self.tol_vals[t] for t in self.tol_vals if re.search(t, full_path)][-1]
-        except IndexError:
-            return self.default_tol
+        # get the most specific tolerance for a key
+        tolerance_values_per_field = [self.tol_vals[t] for t in self.tol_vals if re.search(t, full_path)]
+        if len(tolerance_values_per_field) > 0:
+            return tolerance_values_per_field[-1]
+        return self.default_tol
 
 
 def is_skip(key, skipped_key_prefixes):
