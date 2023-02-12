@@ -6,14 +6,10 @@ from numbers import Number
 
 class DictDiff:
 
-    default_config = dict(
-        tolerance={"default": 1e-09, "fields": {}},
-        skipped=[],
-        required=[],
-    )
+    __slots__ = ("default_tol", "skip_fields", "required_fields", "field_to_tol", "diff")
 
     def __init__(self, config=None):
-        config = config or self.default_config
+        config = config or dict(tolerance={"default": 1e-09, "fields": {}}, skipped=[], required=[])
         tolerance_config = config.get("tolerance", {})
         self.default_tol = tolerance_config.get("default", 1e-09)
         self.skip_fields = {re.compile(field) for field in config.get("skipped", [])}
