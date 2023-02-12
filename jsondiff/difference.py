@@ -14,10 +14,11 @@ class DictDiff:
 
     def __init__(self, config=None):
         config = config or self.default_config
-        self.default_tol = config['tolerance']["default"]
-        self.skip_fields = {re.compile(field) for field in config["skipped"]}
-        self.required_fields = {re.compile(field) for field in config["required"]}
-        self.field_to_tol = {re.compile(field): tol for field, tol in config["tolerance"]["fields"].items()}
+        tolerance_config = config.get("tolerance", {})
+        self.default_tol = tolerance_config.get("default", 1e-09)
+        self.skip_fields = {re.compile(field) for field in config.get("skipped", [])}
+        self.required_fields = {re.compile(field) for field in config.get("required", [])}
+        self.field_to_tol = {re.compile(field): tol for field, tol in tolerance_config.get("fields", {}).items()}
         self.diff = {}
 
     def find_diff(self, one, two, diff, prefix=""):
