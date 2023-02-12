@@ -51,7 +51,7 @@ class DictDiff:
                     # apply specific tolerance to specific fields
                     if not isclose(elem_1, elem_2, rel_tol=self._get_tol(full_path)):
                         diff.update({idx: [elem_1, elem_2]})
-                elif len({type(elem_1), type(elem_2)}) == 2:
+                elif isinstance(elem_1, type(elem_2)):
                     diff.update({idx: [elem_1, elem_2]})
                 elif isinstance(elem_1, str):
                     if elem_1 != elem_2:
