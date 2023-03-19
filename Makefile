@@ -34,6 +34,6 @@ trail-comma: trail-comma
 .PHONY: style-fix
 style-fix:
 	sh -c "isort . "
-	trim corevps
+	trim .
 	unify -r -i --quote '"' .
 	find . -name '*.py' -exec add-trailing-comma {} +
