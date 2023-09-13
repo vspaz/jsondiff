@@ -21,7 +21,7 @@ class DictDiff:
         if isinstance(one, dict) and isinstance(two, dict):
             diff.update(
                 **{k: one[k] for k in one.keys() - two.keys() if not is_skip(k, self.skip_fields)},
-                **{k: two[k] for k in two.keys() - one.keys() if not is_skip(k, self.skip_fields)}
+                **{k: two[k] for k in two.keys() - one.keys() if not is_skip(k, self.skip_fields)},
             )
 
             common_keys = one.keys() & two.keys()
