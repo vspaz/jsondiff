@@ -1,7 +1,7 @@
 add-trailing-comma==3.1.0
 flake8==7.1.1
-isort==5.13.2
+isort==6.0.0b2
 pre-commit==4.0.1
-pytest==8.3.3
+pytest==8.3.4
 pytest-sugar==1.0.0
 trim==0.3
